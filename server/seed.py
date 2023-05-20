@@ -1,9 +1,6 @@
 from random import choice, randint
-from faker import Faker
 from app import app
 from models import db, Item, List, Post, Forum
-
-fake = Faker()
 
 def make_items():
     print("______ITEMS TABLE______")

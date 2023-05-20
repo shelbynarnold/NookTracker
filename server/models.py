@@ -2,6 +2,13 @@ from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy_serializer import SerializerMixin
 from sqlalchemy.ext.associationproxy import association_proxy
 from sqlalchemy.ext.hybrid import hybrid_property
+from flask import Flask
+from flask_bcrypt import Bcrypt
+from flask_migrate import Migrate
+
+app = Flask(__name__)
+bcrypt = Bcrypt
+migrate = Migrate
 
 db = SQLAlchemy()
 
