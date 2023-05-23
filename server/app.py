@@ -1,6 +1,14 @@
 from flask import Flask, request, jsonify, make_response, session
 from config import app, db
 from models import *
+from flask_sqlalchemy import SQLAlchemy
+from datetime import datetime
+
+app = Flask(__name__)
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///users.db'
+app.config['SECRET_KEY'] = "shh it's a secret"
+
+db = SQLAlchemy(app)
 
 @app.route('/check_session', methods=['GET'])
 def check_session():

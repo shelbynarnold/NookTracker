@@ -6,7 +6,7 @@ import { store } from "./redux/store"
 const ItemComponent = () => {
     const items= useSelector((state) => state.allItems.item);
     const renderList = items.map((item) => {
-        const {id, title, image, price, category} = product;
+        const {id, title, image, price, category} = item;
         return (<div className="four column wide" key={id}>
         <div className="ui link cards">
          <div className="card">

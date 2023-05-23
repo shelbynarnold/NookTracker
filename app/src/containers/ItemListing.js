@@ -10,7 +10,7 @@ const ItemListing = () => {
     const dispatch = useDispatch();
 
     const fetchItems = async () => {
-        const response = await axios.get("https://api.nookdata.com/v1/bugs").catch((err) => {
+        const response = await axios.get("https://api.nookdata.com/v1/bugs").catch((err) => { //api not working :,v
             console.log("Err", err);
         }); 
         dispatch(setItems(response.data));

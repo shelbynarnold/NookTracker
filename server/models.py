@@ -17,10 +17,10 @@ class User(db.Model, SerializerMixin):
 
     serialize_rules = ()
 
-    id = db.Column(db.Integer, nullable=False, primary_key=True)
-    username = db.Column(db.String, nullable=False)
+    id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String, nullable=False, unique=True)
     email = db.Column(db.String, nullable=False)
-    password_hashed = db.Column(db.String, nullable=False)
+    password_hashed = db.Column(db.String)
 
     @hybrid_property
     def password_hashed(self):
@@ -43,7 +43,7 @@ class Item(db.Model, SerializerMixin):
 
     serialize_rules = ()
 
-    id = db.Column(db.Integer, nullable=False, primary_key=True)
+    id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String, nullable=False)
     time_available = db.Column(db.Integer, nullable=False)
     month_available = db.Column(db.String, nullable=False)
@@ -59,6 +59,7 @@ class List(db.Model, SerializerMixin):
     id = db.Column(db.Integer, nullable=False, primary_key=True)
     title = db.Column(db.String, nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey("users.id"))
+    item_id = db.Column(db.Integer, db.ForeignKey("item.id"))
 
     def __repr__(self):
         return f"List: {self.title} User: <{self.user_id}>"
@@ -69,9 +70,11 @@ class Post(db.Model, SerializerMixin):
     serialize_rules = ()
 
     id = db.Column(db.Integer, nullable=False, primary_key=True)
-    creator_id = db.Column(db.Integer, db.ForeignKey("users.id"))
+    user_id = db.Column(db.Integer, db.ForeignKey("users.id"))
+    forum_id = db.Column(db.Integer, db.ForeignKey("forum.id"))
     title = db.Column(db.String, nullable=False)
     content = db.Coumn(db.String, nullable=False)
+    img_url = db.Column(db.String)
 
     def __repr__(self):
         return f"Post: {self.title}"
@@ -86,6 +89,25 @@ class Forum(db.Model, SerializerMixin):
     title = db.Column(db.String, nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey("users.id"))
     post_id = db.Column(db.Integer, db.ForeignKey("posts.id"))
+    type = db.Column(db.String)
 
     def __repr__(self):
         return f"Post: <{self.post_id}>"
+
+
+class Post_tags(db.Model, SerializerMixin):
+    __tablename__ = "post_tags"
+
+    serialize_rules = ()
+
+    id= db.Column(db.Integer, nullable=False, primary_key=True)
+    post_id = db.Column(db.Integer, nullable=False)
+    tag_id = db.Column(db.Integer, nullable=False)
+
+class Tags(db.Model, SerializerMixin):
+    __tablename__ = "tags"
+
+    serialize_rules = ()
+
+    id= db.Column(db.Integer, nullable=False, primary_key=True)
+    name = db.Column(db.String, nullable=False)    
