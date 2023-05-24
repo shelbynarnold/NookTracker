@@ -1,4 +1,6 @@
-from flask_sqlalchemy import SQLAlchemy
+from flask_sqlalchemy import SQLAlchemy, create_engine, ForeignKey, Column, String, Integer 
+from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm import sessionmaker
 from sqlalchemy_serializer import SerializerMixin
 from sqlalchemy.ext.associationproxy import association_proxy
 from sqlalchemy.ext.hybrid import hybrid_property
@@ -111,3 +113,5 @@ class Tags(db.Model, SerializerMixin):
 
     id= db.Column(db.Integer, nullable=False, primary_key=True)
     name = db.Column(db.String, nullable=False)    
+
+engine = create_engine("sqlite:")    
