@@ -1,6 +1,6 @@
 from random import choice, randint
 from app import app
-from models import db, Item, List, Post, Forum
+from server.flask_auth.project.models import db, Item, List, Post, Forum
 
 def make_items():
     print("______ITEMS TABLE______")

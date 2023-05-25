@@ -5,8 +5,7 @@ export const Login = (props) => {
     const [pass, setPass] = useState('')
 
     const handleSubmit = (e) => {
-        e.preventDefault();
-        console.log(email);
+        e.preventDefault(); //fix so this actually does something lol
     }
 
     return (
