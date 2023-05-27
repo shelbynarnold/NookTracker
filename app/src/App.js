@@ -1,8 +1,12 @@
 import './App.css';
+import { Home } from "./Home";
+import { Lists } from "./Lists"
 import React, { useState } from "react"
 import { Login } from "./Login";
 import { Register } from "./Register";
 import ItemComponent from './containers/ItemComponent';
+import { Switch, Route } from "react-router-dom";
+import { Forum } from './Forum';
 
 function App() {
   const [currentForm, setCurrentForm] = useState('login');
@@ -13,10 +17,20 @@ function App() {
 
   return (
     <div className='App'>
-      {
-        currentForm === "login" ?  <Login onFormSwitch={toggleForm}/> : <Register onFormSwitch={toggleForm}/>
-      }
-      {/* <ItemComponent /> */}
+      <Switch>
+      <Route path="/login" render={() => (
+  currentForm === 'login' ? <Login onFormSwitch={toggleForm} /> : <Register onFormSwitch={toggleForm} />
+)} />
+      <Route path="/lists">
+        <Lists />
+      </Route>
+      <Route path="/forum">
+        <Forum />
+      </Route>
+      <Route path="/">
+        <Home />
+      </Route>
+      </Switch>
     </div>
   );
 }

@@ -1,18 +1,33 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { ActionTypes } from "./containers/redux/constants/action-types"
 
 export const Login = (props) => {
-    const [email, setEmail] = useState('');
+    const [username, setUsername] = useState('');
     const [pass, setPass] = useState('')
+    const dispatch = useDispatch()
+    const currentUser = useSelector(state => state.currentUser)
 
     const handleSubmit = (e) => {
-        e.preventDefault(); //fix so this actually does something lol
-    }
-
+        e.preventDefault(); 
+            fetch("/login", {method:'POST',
+             body:JSON.stringify(
+                {username: username, password: pass}),
+            headers: {"Content-Type":"application/json"}
+            })
+            .then(response => response.json())
+            .then(data => dispatch({type: ActionTypes.SET_USER, payload: data}))
+            
+        }
+        
     return (
     <div className="auth-form-container">
+        {currentUser && <h1>
+            Hi, {currentUser.username}!
+        </h1>}
         <form className="login-form" onSubmit={handleSubmit}>
-            <label for="email">email</label>
-            <input value={email} onChange={(e) => setEmail(e.target.value)} type="email" placeholder="youremail@email.com" id="email" name="email"/>
+            <label for="username">username</label>
+            <input value={username} onChange={(e) => setUsername(e.target.value)} type="text" placeholder="username" id="username" name="username"/>
             <label for="password">password</label>
             <input value={pass} onChange={(e) => setPass(e.target.value)} type="password" placeholder="******" id="password" name="password"/>
             <button type="submit">Login</button>
