@@ -1,8 +1,8 @@
 from flask import Flask, request, jsonify, make_response, session
 from config import app, db
 from flask_cors import CORS
-# from datetime import datetime
-# from . import models 
+from flask_sqlalchemy import SQLAlchemy
+from flask_migrate import Migrate
 import sys
 sys.path.insert(0, '../../')
 from models import *
@@ -25,7 +25,7 @@ def login():
         if user.authenticate(password):
             session['user_id'] = user.id
             return user.to_dict(), 200
-    return {'error': '401 Unauthorized'}, 401
+    return {'error': 'Wrong password'}, 401
 
 @app.route('/logout', methods=['DELETE'])
 def logout():
@@ -47,6 +47,17 @@ def signup():
     db.session.commit()
     session['user_id'] = new_user.id 
     return new_user.to_dict()
+
+@app.route('/lists/fish', methods=['GET'])
+def fish():
+
+    fish = [fish.to_dict() for fish in Item.query.filter(Item.category == "fish")]
+
+    response = make_response(
+            jsonify(fish),
+            200
+        )
+    return response 
 
 if __name__=="__main__":
     app.run(port=5000, debug=True)

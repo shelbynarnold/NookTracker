@@ -13,6 +13,7 @@ flask-restful = "*"
 sqlalchemy-serializer = "*"
 ipdb = "*"
 flask-cors = "*"
+requests = "*"
 
 [dev-packages]
 

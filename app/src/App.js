@@ -7,6 +7,8 @@ import { Register } from "./Register";
 import ItemComponent from './containers/ItemComponent';
 import { Switch, Route } from "react-router-dom";
 import { Forum } from './Forum';
+import { Fish } from './Fish';
+import { Bugs } from './Bugs';
 
 function App() {
   const [currentForm, setCurrentForm] = useState('login');
@@ -21,6 +23,12 @@ function App() {
       <Route path="/login" render={() => (
   currentForm === 'login' ? <Login onFormSwitch={toggleForm} /> : <Register onFormSwitch={toggleForm} />
 )} />
+      <Route path="/lists/bugs">
+        <Bugs />
+      </Route>
+      <Route path="/lists/fish">
+        <Fish />
+      </Route>
       <Route path="/lists">
         <Lists />
       </Route>

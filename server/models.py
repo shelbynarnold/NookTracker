@@ -34,6 +34,7 @@ class Item(db.Model, SerializerMixin):
 
     serialize_rules = ()
 
+    category = db.Column(db.String)
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String, nullable=False)
     time_available = db.Column(db.Integer, nullable=False)
