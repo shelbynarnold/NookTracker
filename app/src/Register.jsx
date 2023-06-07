@@ -1,12 +1,32 @@
 import React, { useState } from "react";
+import axios from 'axios';
+import finalPropsSelectorFactory from "react-redux/es/connect/selectorFactory";
 
 export const Register = (props) => {
     const [name, setName] = useState('')
     const [email, setEmail] = useState('');
     const [pass, setPass] = useState('')
 
-    const handleSubmit = (e) => {
-        e.preventDefault(); //fix this so it actually does something lol 
+    const handleSubmit = async (e) => {
+        e.preventDefault(); 
+        props.onFormSwitch('login')
+
+        try{
+            const response = await axios.post('/signup', {username: name, email, password:pass});
+            console.log(response.data);
+
+            setName({
+                name: ''
+            })
+            setEmail({
+                email: ''
+            })
+            setPass({
+                pass:''
+            })
+        } catch (error) {
+            console.error(error);
+        }
         
     }
 
@@ -25,3 +45,5 @@ export const Register = (props) => {
     </div>
     )
 }
+
+export default Register

@@ -45,8 +45,9 @@ def signup():
     new_user.password_hashed = password
     db.session.add(new_user)
     db.session.commit()
-    session['user_id'] = new_user.id 
+    # session['user_id'] = new_user.id 
     return new_user.to_dict()
+
 
 @app.route('/lists/fish', methods=['GET'])
 def fish():
@@ -58,6 +59,38 @@ def fish():
             200
         )
     return response 
+
+@app.route('/lists/bugs', methods=['GET'])
+def bug():
+
+    bug = [bug.to_dict() for bug in Item.query.filter(Item.category == "bug")] 
+
+    response = make_response(
+        jsonify(bug),
+        200
+                             )    
+    return response 
+
+@app.route('/forum', methods=['GET', 'POST'])
+def posts():
+        if request.method == 'GET':
+            posts = []
+            for post in Post.query.all():
+                post_dict = post.to_dict()
+                posts.append(post_dict)
+
+            response = make_response(
+                posts, 
+                200
+            )    
+            return response 
+        elif request.method == 'POST':
+            response_body = {}
+            response = make_response(
+                response_body,
+                201
+            )    
+            return response 
 
 if __name__=="__main__":
     app.run(port=5000, debug=True)

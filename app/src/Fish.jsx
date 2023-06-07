@@ -14,7 +14,7 @@ return (
     <section>
         <h1>List of fish</h1>
         {fish.map((fish) => (
-            <FishItem key={fish.id} fish={fish} />
+            <FishItem key={fish.id} fish={fish}/>
         ))}
         </section>
 )}
@@ -22,4 +22,6 @@ return (
 const FishItem = ({fish}) =>
     <div>
         <p>{fish.title}</p>
+        <img src={fish.image} />
+        <button>Add fish to list</button>
     </div>

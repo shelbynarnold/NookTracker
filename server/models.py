@@ -2,6 +2,12 @@ from sqlalchemy_serializer import SerializerMixin
 from sqlalchemy.ext.associationproxy import association_proxy
 from sqlalchemy.ext.hybrid import hybrid_property
 from config import bcrypt, db
+from sqlalchemy.orm import relationship
+
+# post_tags = db.Table('post_tags',
+#                     db.Column('post_id', db.Integer, db.ForeignKey('post.id'), primary_key=True),
+#                     db.Column('tag_id', db.Integer, db.ForeignKey('tag.id'), primary_key=True)
+#                     )
 
 class User(db.Model, SerializerMixin):
     __tablename__ = "users"
@@ -35,6 +41,7 @@ class Item(db.Model, SerializerMixin):
     serialize_rules = ()
 
     category = db.Column(db.String)
+    image = db.Column(db.String)
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String, nullable=False)
     time_available = db.Column(db.Integer, nullable=False)
@@ -65,8 +72,9 @@ class Post(db.Model, SerializerMixin):
     user_id = db.Column(db.Integer, db.ForeignKey("users.id"))
     forum_id = db.Column(db.Integer, db.ForeignKey("forums.id"))
     title = db.Column(db.String, nullable=False)
-    content = db.Column(db.String, nullable=False)
+    content = db.Column(db.Text, nullable=False)
     img_url = db.Column(db.String)
+    # tags = db.relationship('Tags', secondary=post_tags, backref=db.backref('posts'))
 
     def __repr__(self):
         return f"Post: {self.title}"
@@ -86,14 +94,14 @@ class Forum(db.Model, SerializerMixin):
         return f"Post: <{self.post_id}>"
 
 
-class Post_tags(db.Model, SerializerMixin):
-    __tablename__ = "post_tags"
+# class Post_tags(db.Model, SerializerMixin):
+#     __tablename__ = "post_tags"
 
-    serialize_rules = ()
+#     serialize_rules = ()
 
-    id= db.Column(db.Integer, nullable=False, primary_key=True)
-    post_id = db.Column(db.Integer, db.ForeignKey('posts.id'), nullable=False, )
-    tag_id = db.Column(db.Integer, db.ForeignKey('tags.id'), nullable=False,)
+#     id= db.Column(db.Integer, nullable=False, primary_key=True)
+#     post_id = db.Column(db.Integer, db.ForeignKey('post.id'), nullable=False, )
+#     tag_id = db.Column(db.Integer, db.ForeignKey('tag.id'), nullable=False,)
 
 class Tags(db.Model, SerializerMixin):
     __tablename__ = "tags"
@@ -101,4 +109,8 @@ class Tags(db.Model, SerializerMixin):
     serialize_rules = ()
 
     id= db.Column(db.Integer, nullable=False, primary_key=True)
-    name = db.Column(db.String, nullable=False)    
+    name = db.Column(db.String, nullable=False) 
+    # posts = relationship('Post', secondary=post_tags, backref='Tags')   
+
+    def __repr__(self):
+        return f'<Tag "{self.name}">'

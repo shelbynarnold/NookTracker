@@ -1,4 +1,5 @@
 export const ActionTypes = {
+    FETCH_FISH: "FETCH_FISH",
     SET_USER: "SET_USER",
     SET_ITEMS: "SET_ITEMS",
     SELECTED_ITEM: "SELECTED_ITEMS",
