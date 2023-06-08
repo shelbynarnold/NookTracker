@@ -1,14 +1,14 @@
 import { ActionTypes } from "../constants/fishAction-Types"
+import fishApi from "../../../apis/fishApi";
 import axios from "axios";
 
-export const fetchItems = async() => {
-const response = await axios.get("/fish");
-console.log(response);
-    return {
-        type:  ActionTypes.SET_ITEMS,
-        payload: response,
-    }
-}
+export const fetchItems = () => {
+
+return async (dispatch) => {
+    const response = await fishApi.get("/fish");
+
+    dispatch({type:ActionTypes.FETCH_ITEMS, payload:response.data})
+}}
 
 export const setItems = (items) => {
     return {

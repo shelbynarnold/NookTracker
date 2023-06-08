@@ -9,6 +9,7 @@ import { Switch, Route } from "react-router-dom";
 import { Forum } from './Forum';
 import { Fish } from './Fish';
 import { Bugs } from './Bugs';
+import { Dashboard } from './Dashboard';
 
 function App() {
   const [currentForm, setCurrentForm] = useState('login');
@@ -34,6 +35,9 @@ function App() {
       </Route>
       <Route path="/forum">
         <Forum />
+      </Route>
+      <Route path="/dashboard">
+        <Dashboard />
       </Route>
       <Route path="/">
         <Home />
