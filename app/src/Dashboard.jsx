@@ -1,7 +1,7 @@
 import React from "react";
 import { useDispatch } from "react-redux";
 import { ActionTypes } from "./containers/redux/constants/action-types";
-import { useHistory } from "react-router-dom";
+import { useHistory, Link } from "react-router-dom";
 
 export const Dashboard = () => {
 const dispatch = useDispatch()
@@ -21,8 +21,11 @@ const handleClick = (e) => {
 
     return(
         <div>
+            <h1>Welcome back!</h1>
         <button onClick={handleClick}>Logout</button>
+        <Link to="/post"><button>My Posts</button></Link>
+        <Link to="/list"><button>My Lists</button></Link>
+        <Link to="/"><button>Home</button></Link>
     </div>
     )
 }
-    

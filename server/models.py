@@ -3,11 +3,19 @@ from sqlalchemy.ext.associationproxy import association_proxy
 from sqlalchemy.ext.hybrid import hybrid_property
 from config import bcrypt, db
 from sqlalchemy.orm import relationship
+from flask import Flask, render_template
 
-# post_tags = db.Table('post_tags',
-#                     db.Column('post_id', db.Integer, db.ForeignKey('post.id'), primary_key=True),
-#                     db.Column('tag_id', db.Integer, db.ForeignKey('tag.id'), primary_key=True)
-#                     )
+post_tags = db.Table('post_tags',
+                    db.Column('post_id', db.Integer, db.ForeignKey('posts.id')),
+                    db.Column('tag_id', db.Integer, db.ForeignKey('tags.id')), extend_existing=True)
+
+list_items = db.Table('list_items', 
+                      db.Column('list_id', db.Integer, db.ForeignKey('lists.id')),
+                      db.Column('item_id', db.Integer, db.ForeignKey('items.id')), extend_existing=True)
+
+# user_list = db.Table('user_list', 
+#                      db.Column('user_id', db.Integer, db.ForeignKey('user.id')),
+#                      db.Column,('list_id', db.Integer, db.ForeignKey('list.id')))
 
 class User(db.Model, SerializerMixin):
     __tablename__ = "users"
@@ -17,6 +25,7 @@ class User(db.Model, SerializerMixin):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String, nullable=False, unique=True)
     email = db.Column(db.String, nullable=False)
+    # following = db.relationship('List', secondary=user_list, backref='followers')
     _password_hashed = db.Column(db.String)
 
     @hybrid_property
@@ -46,6 +55,7 @@ class Item(db.Model, SerializerMixin):
     title = db.Column(db.String, nullable=False)
     time_available = db.Column(db.Integer, nullable=False)
     month_available = db.Column(db.String, nullable=False)
+    lists= relationship('List', secondary=list_items, back_populates=('items'))
 
     def __repr__(self):
         return f"Item: {self.title}"
@@ -58,7 +68,7 @@ class List(db.Model, SerializerMixin):
     id = db.Column(db.Integer, nullable=False, primary_key=True)
     title = db.Column(db.String, nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey("users.id"))
-    item_id = db.Column(db.Integer, db.ForeignKey("items.id"))
+    items = relationship('Item', secondary=list_items, back_populates=('lists'))
 
     def __repr__(self):
         return f"List: {self.title} User: <{self.user_id}>"
@@ -73,11 +83,13 @@ class Post(db.Model, SerializerMixin):
     forum_id = db.Column(db.Integer, db.ForeignKey("forums.id"))
     title = db.Column(db.String, nullable=False)
     content = db.Column(db.Text, nullable=False)
+    author_id = db.Column(db.Integer, db.ForeignKey("users.id"))
     img_url = db.Column(db.String)
-    # tags = db.relationship('Tags', secondary=post_tags, backref=db.backref('posts'))
+    tags = db.relationship('Tag', secondary=post_tags, back_populates=('posts'))
 
     def __repr__(self):
         return f"Post: {self.title}"
+
 
 
 class Forum(db.Model, SerializerMixin):
@@ -87,30 +99,22 @@ class Forum(db.Model, SerializerMixin):
     
     id = db.Column(db.Integer, nullable=False, primary_key=True)
     title = db.Column(db.String, nullable=False)
+    content = db.Column(db.Text)
     user_id = db.Column(db.Integer, db.ForeignKey("users.id"))
     type = db.Column(db.String)
 
     def __repr__(self):
-        return f"Post: <{self.post_id}>"
+        return f"Post: <{self.post_id}>" 
 
-
-# class Post_tags(db.Model, SerializerMixin):
-#     __tablename__ = "post_tags"
-
-#     serialize_rules = ()
-
-#     id= db.Column(db.Integer, nullable=False, primary_key=True)
-#     post_id = db.Column(db.Integer, db.ForeignKey('post.id'), nullable=False, )
-#     tag_id = db.Column(db.Integer, db.ForeignKey('tag.id'), nullable=False,)
-
-class Tags(db.Model, SerializerMixin):
+class Tag(db.Model, SerializerMixin):
     __tablename__ = "tags"
+    
 
     serialize_rules = ()
 
     id= db.Column(db.Integer, nullable=False, primary_key=True)
     name = db.Column(db.String, nullable=False) 
-    # posts = relationship('Post', secondary=post_tags, backref='Tags')   
+    posts = relationship('Post', secondary=post_tags, back_populates=('tags'))   
 
     def __repr__(self):
         return f'<Tag "{self.name}">'

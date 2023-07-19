@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify, make_response, session
+from flask import Flask, request, jsonify, make_response, session, flash
 from config import app, db
 from flask_cors import CORS
 from flask_sqlalchemy import SQLAlchemy
@@ -71,7 +71,7 @@ def bug():
                              )    
     return response 
 
-@app.route('/forum', methods=['GET', 'POST'])
+@app.route('/forum', methods=['GET', 'POST', 'PATCH', 'DELETE'])
 def posts():
         if request.method == 'GET':
             posts = []
@@ -85,12 +85,54 @@ def posts():
             )    
             return response 
         elif request.method == 'POST':
-            response_body = {}
-            response = make_response(
-                response_body,
+                request_json = request.get_json()
+                new_post = Post(
+                    title = request_json.get('title'),
+                    content = request_json.get('content')
+                )
+                db.session.add(new_post)
+                db.session.commit()
+                response = make_response(
+                new_post.to_dict(),
                 201
+                )    
+                return response   
+        elif request.method == 'PATCH':
+             request_json = request.get_json()
+             edit_post = Post(
+                  title = request_json.patch('title'),
+                  content = request_json.patch('content')
+                  )
+        db.session.add(edit_post)
+        db.session.commit()
+        response = make_response(
+             edit_post.to_dict(),
+             201
+        )     
+        return response       
+
+@app.route('/list', methods=['GET', 'POST'])
+def lists():
+    if request.method == 'GET':
+            lists = []
+            for list in List.query.all():
+                list_dict = list.to_dict()
+                lists.append(list_dict)
+
+            response = make_response(
+                lists, 
+                200
             )    
-            return response 
+            return response
+    elif request.method == 'POST':
+        request_json = request.get_json()
+        new_list = List(
+            item_id = request_json.get('item_id'), 
+            title = request_json.get('title')
+        )    
+        db.session.add(new_list)
+        db.session.commit()  
+        return new_list.to_dict()    
 
 if __name__=="__main__":
     app.run(port=5000, debug=True)
