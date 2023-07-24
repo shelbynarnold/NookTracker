@@ -22,8 +22,8 @@ export const List = () => {
         allLists.map((list) => {
             return (
             <div>
-                {list.id}
-                {bug.title}
+                
+                {list.bug_title}
             </div>)
         })
      
