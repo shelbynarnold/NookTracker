@@ -1,4 +1,5 @@
 import React, {useState, useEffect} from "react";
+import { UserContext } from "./App";
 
 export function Bugs() {
     const [bugs, setBugs] = useState([]);
@@ -19,15 +20,16 @@ return (
         </section>
 )}
 const BugItem = ({bug}) => {
+    const { user } = React.useContext(UserContext);
     const [list, setList] = useState([])
     const addBugClick = (bug) => {
         
         const newBugObj = {
-            item_id:bug.id, 
-            title: "no title"
+            list_id: user.id, 
+            item_id: bug.id,
             }
             
-            fetch("/list", {
+            fetch("/listitems", {
                   method: "POST",
                   headers: {
                     "Content-Type":"application/json",

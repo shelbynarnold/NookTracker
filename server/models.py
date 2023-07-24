@@ -9,9 +9,9 @@ post_tags = db.Table('post_tags',
                     db.Column('post_id', db.Integer, db.ForeignKey('posts.id')),
                     db.Column('tag_id', db.Integer, db.ForeignKey('tags.id')), extend_existing=True)
 
-list_items = db.Table('list_items', 
-                      db.Column('list_id', db.Integer, db.ForeignKey('lists.id')),
-                      db.Column('item_id', db.Integer, db.ForeignKey('items.id')), extend_existing=True)
+# list_items = db.Table('list_items', 
+#                       db.Column('list_id', db.Integer, db.ForeignKey('lists.id')),
+#                       db.Column('item_id', db.Integer, db.ForeignKey('items.id')), extend_existing=True)
 
 # user_list = db.Table('user_list', 
 #                      db.Column('user_id', db.Integer, db.ForeignKey('user.id')),
@@ -55,7 +55,7 @@ class Item(db.Model, SerializerMixin):
     title = db.Column(db.String, nullable=False)
     time_available = db.Column(db.Integer, nullable=False)
     month_available = db.Column(db.String, nullable=False)
-    lists= relationship('List', secondary=list_items, back_populates=('items'))
+    # lists= relationship('List', secondary=list_items, back_populates=('items'))
 
     def __repr__(self):
         return f"Item: {self.title}"
@@ -68,7 +68,7 @@ class List(db.Model, SerializerMixin):
     id = db.Column(db.Integer, nullable=False, primary_key=True)
     title = db.Column(db.String, nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey("users.id"))
-    items = relationship('Item', secondary=list_items, back_populates=('lists'))
+    # items = relationship('Item', secondary=list_items, back_populates=('lists'))
 
     def __repr__(self):
         return f"List: {self.title} User: <{self.user_id}>"
@@ -118,3 +118,15 @@ class Tag(db.Model, SerializerMixin):
 
     def __repr__(self):
         return f'<Tag "{self.name}">'
+    
+class List_Item(db.Model, SerializerMixin):
+    __tablename__ = "list_items"
+
+    serialize_rules = ()
+
+    id = db.Column(db.Integer, primary_key=True)
+    list_id = db.Column(db.Integer, db.ForeignKey("lists.id"))
+    item_id = db.Column(db.Integer, db.ForeignKey("items.id"))
+
+    def __repr__(self):
+        return f"List: <{self.list_id}> Item: <{self.item_id}>"

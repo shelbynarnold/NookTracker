@@ -23,9 +23,7 @@ const handleClick = (e) => {
         <div>
             <h1>Welcome back!</h1>
         <button onClick={handleClick}>Logout</button>
-        <Link to="/post"><button>My Posts</button></Link>
-        <Link to="/list"><button>My Lists</button></Link>
-        <Link to="/"><button>Home</button></Link>
+        <Link to="/list"><button>My List</button></Link>
     </div>
     )
 }

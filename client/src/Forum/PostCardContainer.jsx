@@ -18,11 +18,11 @@ function PostCardContainer({allPosts, setAllPosts}){
       }
 
     if(allPosts === undefined || allPosts.length === 0){
-        return <h2>Loading...</h2>
+        return <h2>No Posts Yet!</h2>
     }
 
     const displayPosts = allPosts.map((post) => {
-        return <PostCard key={post.id} post={post} handleDelete={handleDelete}/>
+        return <PostCard key={post.id} post={post} handleDelete={handleDelete} allPosts={allPosts} setAllPosts={setAllPosts}/>
     })
 
     return(

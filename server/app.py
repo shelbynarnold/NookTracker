@@ -123,7 +123,30 @@ def lists():
         )    
         db.session.add(new_list)
         db.session.commit()  
-        return new_list.to_dict()    
+        return new_list.to_dict()   
+
+@app.route('/listitems', methods=['GET', 'POST'])
+def list_item_show():
+    if request.method == 'GET':
+        list_items = []
+        for list_item in List_Item.query.all():
+            list_item_dict = list_item.to_dict()
+            list_items.append(list_item_dict)
+
+        response = make_response(
+            list_items, 
+            200
+        )    
+        return response
+    elif request.method == 'POST':
+        request_json = request.get_json()
+        new_list_item = List_Item(
+            item_id = request_json.get('item_id'), 
+            list_id = request_json.get('list_id')
+        )    
+        db.session.add(new_list_item)
+        db.session.commit()  
+        return new_list_item.to_dict()         
 
 if __name__=="__main__":
     app.run(port=5000, debug=True)

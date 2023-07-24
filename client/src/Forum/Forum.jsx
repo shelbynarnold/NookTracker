@@ -43,6 +43,7 @@ export const PostForm = () => {
         title: title,
         content: content,
         user_id: user.username,
+        tag: tag
       }),
     })
       .then((r) => r.json())
@@ -65,7 +66,7 @@ export const PostForm = () => {
             <button type="submit">Submit</button>
           </form>
         </label>
-        <PostCardContainer allPosts={allPosts} setAllPosts={setAllPosts}/>
+        <PostCardContainer allPosts={allPosts} setAllPosts={setAllPosts} {...displayPosts}/>
       </div>
   </div>
   );
