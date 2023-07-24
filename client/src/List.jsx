@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { Bugs } from "./Bugs";
 
 export const List = () => {
+    console.log('test')
     const dispatch = useDispatch();
     const lists = useSelector ((state) => state.lists);
     const [allLists, setAllLists] = useState([]);
@@ -10,14 +12,20 @@ export const List = () => {
         .then(r=>r.json())
         .then(lists=>setAllLists(lists))
     },[])
+    
+    console.log(allLists)
 
-const displayLists = allLists.map((list) => {
+    
     return (
-        <div>
-            {list.id}
-        </div>
+
+        
+        allLists.map((list) => {
+            return (
+            <div>
+                {list.id}
+                {bug.title}
+            </div>)
+        })
+     
     )
-})
-
-
 }

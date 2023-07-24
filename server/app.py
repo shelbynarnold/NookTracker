@@ -118,8 +118,9 @@ def lists():
     elif request.method == 'POST':
         request_json = request.get_json()
         new_list = List(
-            item_id = request_json.get('item_id'), 
-            title = request_json.get('title')
+            item_id = request_json.get('item_id'),
+            bug_title = request_json.get('bug_title') 
+            # title = request_json.get('title')
         )    
         db.session.add(new_list)
         db.session.commit()  
@@ -142,7 +143,8 @@ def list_item_show():
         request_json = request.get_json()
         new_list_item = List_Item(
             item_id = request_json.get('item_id'), 
-            list_id = request_json.get('list_id')
+            list_id = request_json.get('list_id'),
+            bug_title = request_json.get('bug_title')
         )    
         db.session.add(new_list_item)
         db.session.commit()  

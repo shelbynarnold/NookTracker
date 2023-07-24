@@ -27,6 +27,7 @@ const BugItem = ({bug}) => {
         const newBugObj = {
             list_id: user.id, 
             item_id: bug.id,
+            bug_title: bug.title
             }
             
             fetch("/listitems", {

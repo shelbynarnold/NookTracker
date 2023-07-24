@@ -1,8 +1,8 @@
-"""create tables
+"""empty message
 
-Revision ID: becc51636ffb
-Revises: a7721c271550
-Create Date: 2023-07-14 17:36:08.208649
+Revision ID: 583b24746229
+Revises: 
+Create Date: 2023-07-24 11:05:10.731108
 
 """
 from alembic import op
@@ -10,8 +10,8 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = 'becc51636ffb'
-down_revision = 'a7721c271550'
+revision = '583b24746229'
+down_revision = None
 branch_labels = None
 depends_on = None
 
@@ -51,16 +51,19 @@ def upgrade():
     )
     op.create_table('lists',
     sa.Column('id', sa.Integer(), nullable=False),
-    sa.Column('title', sa.String(), nullable=False),
     sa.Column('user_id', sa.Integer(), nullable=True),
     sa.ForeignKeyConstraint(['user_id'], ['users.id'], ),
     sa.PrimaryKeyConstraint('id')
     )
     op.create_table('list_items',
+    sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('list_id', sa.Integer(), nullable=True),
     sa.Column('item_id', sa.Integer(), nullable=True),
+    sa.Column('bug_title', sa.String(), nullable=True),
+    sa.ForeignKeyConstraint(['bug_title'], ['items.title'], ),
     sa.ForeignKeyConstraint(['item_id'], ['items.id'], ),
-    sa.ForeignKeyConstraint(['list_id'], ['lists.id'], )
+    sa.ForeignKeyConstraint(['list_id'], ['lists.id'], ),
+    sa.PrimaryKeyConstraint('id')
     )
     op.create_table('posts',
     sa.Column('id', sa.Integer(), nullable=False),

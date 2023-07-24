@@ -57,6 +57,8 @@ class Item(db.Model, SerializerMixin):
     month_available = db.Column(db.String, nullable=False)
     # lists= relationship('List', secondary=list_items, back_populates=('items'))
 
+    serialize_rules = ('-list.items',)
+
     def __repr__(self):
         return f"Item: {self.title}"
     
@@ -66,9 +68,12 @@ class List(db.Model, SerializerMixin):
     serialize_rules = ()
 
     id = db.Column(db.Integer, nullable=False, primary_key=True)
-    title = db.Column(db.String, nullable=False)
+    # title = db.Column(db.String, nullable=True, default="")
     user_id = db.Column(db.Integer, db.ForeignKey("users.id"))
-    # items = relationship('Item', secondary=list_items, back_populates=('lists'))
+    items = association_proxy('list_items', 'item')
+    list_items = db.relationship('List_Item', backref='list')
+
+    serialize_rules = ('-items.list',)
 
     def __repr__(self):
         return f"List: {self.title} User: <{self.user_id}>"
@@ -127,6 +132,7 @@ class List_Item(db.Model, SerializerMixin):
     id = db.Column(db.Integer, primary_key=True)
     list_id = db.Column(db.Integer, db.ForeignKey("lists.id"))
     item_id = db.Column(db.Integer, db.ForeignKey("items.id"))
+    bug_title = db.Column(db.String, db.ForeignKey("items.title"))
 
     def __repr__(self):
         return f"List: <{self.list_id}> Item: <{self.item_id}>"
