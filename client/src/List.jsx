@@ -22,8 +22,9 @@ export const List = () => {
         allLists.map((list) => {
             return (
             <div>
-                
                 {list.bug_title}
+                <img src={list.bug_image}></img>
+                <button>Remove from List</button>
             </div>)
         })
      

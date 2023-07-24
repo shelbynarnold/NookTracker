@@ -133,6 +133,7 @@ class List_Item(db.Model, SerializerMixin):
     list_id = db.Column(db.Integer, db.ForeignKey("lists.id"))
     item_id = db.Column(db.Integer, db.ForeignKey("items.id"))
     bug_title = db.Column(db.String, db.ForeignKey("items.title"))
+    bug_image = db.Column(db.String, db.ForeignKey("items.image"))
 
     def __repr__(self):
         return f"List: <{self.list_id}> Item: <{self.item_id}>"

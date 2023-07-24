@@ -119,7 +119,8 @@ def lists():
         request_json = request.get_json()
         new_list = List(
             item_id = request_json.get('item_id'),
-            bug_title = request_json.get('bug_title') 
+            bug_title = request_json.get('bug_title'),
+            bug_image = request_json.get('bug_image')
             # title = request_json.get('title')
         )    
         db.session.add(new_list)
@@ -144,7 +145,8 @@ def list_item_show():
         new_list_item = List_Item(
             item_id = request_json.get('item_id'), 
             list_id = request_json.get('list_id'),
-            bug_title = request_json.get('bug_title')
+            bug_title = request_json.get('bug_title'),
+            bug_image = request_json.get('bug_image')
         )    
         db.session.add(new_list_item)
         db.session.commit()  
